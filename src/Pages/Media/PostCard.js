@@ -1,7 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const PostCard = ({post}) => {
-    const {status,image,user} = post
+    const {status,image,user,_id} = post
   return (
     <div className='max-w-5xl mx-auto h-[270px] w-full'>
         <div className="card lg:card-side bg-base-100 shadow-xl ">
@@ -10,7 +11,9 @@ const PostCard = ({post}) => {
     <h2 className="card-title">Posted By: {user}</h2>
     <p>{status}</p>
     <div className="card-actions justify-end">
+      <Link to={`/details/${_id}`}>
       <button className="btn btn-primary rounded">Details</button>
+      </Link>
     </div>
   </div>
 </div>
