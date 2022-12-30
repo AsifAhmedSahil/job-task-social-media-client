@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import loginimg from "../../assets/log.jpg";
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 
 const SignUp = () => {
+  const navigate = useNavigate()
   const {createUser,googleSignIn} = useContext(AuthContext)
   // const [createdUserEmail,setCreatedUserEmail] = useState("")
   const handleGoogleSignin = () =>{
@@ -36,6 +37,8 @@ const SignUp = () => {
       const user = result.user;
       console.log(user);
       form.reset();
+      navigate("/")
+
     })
     .catch(error =>{
       console.error(error);
@@ -44,7 +47,7 @@ const SignUp = () => {
 
   const saveUser = (email,name,university,address,password) =>{
     const user = {name,email,university,address,password};
-    fetch("http://localhost:5000/users",{
+    fetch("https://server-eight-psi.vercel.app/users",{
       method: 'POST',
       headers:{
         "content-type": "application/json"

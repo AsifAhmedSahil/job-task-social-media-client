@@ -33,12 +33,12 @@ const Upload = () => {
                 const post ={
                     status:status,
                     image:imgData.data.url,
-                    user:user?.email,
+                    email:user?.email,
                     like:"0"
                 }
 
                 // save database
-                fetch("http://localhost:5000/posts",{
+                fetch("https://server-eight-psi.vercel.app/posts",{
                     method:"POST",
                     headers:{
                       "content-type": "application/json",
@@ -50,6 +50,7 @@ const Upload = () => {
                 .then(result =>{
                     console.log(result);
                     toast.success("post successful! 🙂 ")
+                    form.reset();
                 })
             }
           })

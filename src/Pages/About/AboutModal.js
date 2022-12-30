@@ -10,7 +10,7 @@ const AboutModal = ({aboutUser}) => {
     const handleUpdateUser = event =>{
         event.preventDefault();
         // console.log(userdata)
-        fetch(`http://localhost:5000/users/${_id}`,{
+        fetch(`https://server-eight-psi.vercel.app/users/${_id}`,{
             method:"PUT",
             headers:{
               "content-type": "application/json"

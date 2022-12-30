@@ -8,7 +8,7 @@ const About = () => {
     const [about,setAbout] = useState([])
     const [aboutUser,setAboutUser] = useState(null);
     useEffect(()=>{
-        fetch(`http://localhost:5000/users?email=${user?.email}`)
+        fetch(`https://server-eight-psi.vercel.app/users?email=${user?.email}`)
         .then(res => res.json())
         .then(data => setAbout(data))
       },[user?.email]);

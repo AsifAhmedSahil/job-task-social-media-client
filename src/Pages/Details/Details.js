@@ -8,7 +8,7 @@ import Comment from '../Comment/Comment';
 const Details = () => {
   const {user} = useContext(AuthContext);
   
-  const {status,image,_id,Like} = useLoaderData();
+  const {status,image,_id,Like,email} = useLoaderData();
   const [comments,setComments] = useState([])
 
   const [like,setLike] = useState(Like)
@@ -17,7 +17,7 @@ const Details = () => {
   
 
   useEffect(()=>{
-    fetch("http://localhost:5000/comments")
+    fetch("https://server-eight-psi.vercel.app/comments")
     .then(res => res.json())
     .then(data => setComments(data))
   },[comments]);
@@ -40,7 +40,7 @@ const Details = () => {
 
     }
 
-    fetch("http://localhost:5000/comments",{
+    fetch("https://server-eight-psi.vercel.app/comments",{
       method:"POST",
       headers:{
         "content-type": "application/json"
@@ -60,7 +60,7 @@ const Details = () => {
     
   const handleLike = id =>{
     
-    fetch(`http://localhost:5000/posts/${id}`,{
+    fetch(`https://server-eight-psi.vercel.app/posts/${id}`,{
       method:"PATCH",
 
     })
@@ -78,8 +78,8 @@ const Details = () => {
     <img src={image} alt="Shoes" className="rounded-xl" />
   </figure>
   <div className="card-body items-center text-center">
-    <h2 className="card-title">Shoes!</h2>
-    <p>{status}</p>
+    <h2 className="card-title">Posted By: {email} </h2>
+    <p className='border m-2 p-2 w-full'>Status: {status}</p>
     <div className=" flex flex-row justify-between">
 
       { like !== "Like" ?
