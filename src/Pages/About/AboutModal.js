@@ -1,12 +1,41 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
-const AboutModal = ({info}) => {
-    const {name,email,university,address} = info
+const AboutModal = ({aboutUser}) => {
+    const {name,email,university,address,_id} = aboutUser
 
-    const [userdata,setUserData] = useState([])
+
+    const [userdata,setUserData] = useState(aboutUser)
 
     const handleUpdateUser = event =>{
         event.preventDefault();
+        // console.log(userdata)
+        fetch(`http://localhost:5000/users/${_id}`,{
+            method:"PUT",
+            headers:{
+              "content-type": "application/json"
+            },
+            body:JSON.stringify(userdata)
+        })
+        .then(res => res.json())
+        .then(data => {
+          
+          if(data.modifiedCount > 0){
+            console.log(data);
+            event.target.reset();
+            toast.success("Update Successsfully!! 🙂 ")
+          }
+        })
+        
+    }
+
+    const handleInputChange = event =>{
+      const field = event.target.name;
+      const value = event.target.value;
+      const newData = {...userdata}
+      newData[field] = value;
+      setUserData(newData);
+
     }
   return (
     <div>
@@ -23,11 +52,12 @@ const AboutModal = ({info}) => {
             User Information
           </h3>
           <form onSubmit={handleUpdateUser} className="grid grid-cols-1 gap-4 mt-8">
-          <input type="text" value={email} disabled placeholder="Type here" className="input w-full " />
-          <input type="text" value={name} placeholder="Type here" className="input w-full " />
-          <input type="text" value={university} placeholder="Type here" className="input w-full " />
-          <input type="text" value={address} placeholder="Type here" className="input w-full " />
-          <input type="submit" className="btn btn-accent bg-green-500 w-full " value="submit" />
+          {/* <input  type="email"  disabled placeholder="Type here" className="input w-full " /> */}
+           <input onChange={handleInputChange}  type="email" name="email" value={email} disabled placeholder="Type here" className="input w-full " /> 
+           <input  onChange={handleInputChange} type="text" name="name" defaultValue={name} placeholder="Type here" className="input w-full " />
+          <input  onChange={handleInputChange} type="text" name="university" defaultValue={university} placeholder="Type here" className="input w-full " />
+          <input  onChange={handleInputChange} type="text" name="address" defaultValue={address} placeholder="Type here" className="input w-full " />
+          <input type="submit" className="btn btn-accent bg-green-500 w-full " value="Update User" /> 
           </form>
         </div>
       </div>

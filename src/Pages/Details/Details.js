@@ -1,14 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
-import { AiOutlineLike,AiOutlineSend } from 'react-icons/ai';
+import { AiOutlineLike,AiOutlineSend ,AiFillLike} from 'react-icons/ai';
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 import { toast } from 'react-toastify';
 import Comment from '../Comment/Comment';
 
 const Details = () => {
   const {user} = useContext(AuthContext);
-  const {status,image,_id} = useLoaderData();
+  
+  const {status,image,_id,Like} = useLoaderData();
   const [comments,setComments] = useState([])
+
+  const [like,setLike] = useState(Like)
+
+  
   
 
   useEffect(()=>{
@@ -16,6 +21,7 @@ const Details = () => {
     .then(res => res.json())
     .then(data => setComments(data))
   },[comments]);
+  
 
   
 
@@ -52,6 +58,20 @@ const Details = () => {
     .catch(err => console.log(err))
   }
     
+  const handleLike = id =>{
+    
+    fetch(`http://localhost:5000/posts/${id}`,{
+      method:"PATCH",
+
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      // Like = "Like"
+      setLike("Like")
+
+    })
+  }
   return (
     <div className="card w-96 bg-base-100 shadow-xl mx-auto my-[100px] ">
   <figure className="px-10 pt-10">
@@ -61,7 +81,13 @@ const Details = () => {
     <h2 className="card-title">Shoes!</h2>
     <p>{status}</p>
     <div className=" flex flex-row justify-between">
-      <button className="mr-6"><AiOutlineLike size={30}></AiOutlineLike></button>
+
+      { like !== "Like" ?
+        <button onClick={() => handleLike(_id)} className="mr-6"><AiOutlineLike size={30}></AiOutlineLike></button>
+        : 
+        <button onClick={() => handleLike(_id)} className="mr-6"><AiFillLike size={30}></AiFillLike></button>
+        }
+
       <form onSubmit={handleComment} className="flex justify-center items-center ">
         
       <div>
@@ -69,14 +95,12 @@ const Details = () => {
       </div>
       <input type="submit" value="send"  className='btn btn-sm flex ml-9'/>
       </form>
-      {/* <button className="mr-6"><AiOutlineSend size={30}></AiOutlineSend></button> */}
-      
     </div>
     <h1 className='font-bold text-3xl underline mt-10'>Comments</h1>
     {
-      
       comments?.map(com => <Comment com={com} key={com._id} ></Comment>)
     }
+    
     
   </div>
 </div>

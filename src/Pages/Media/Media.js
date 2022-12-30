@@ -9,7 +9,7 @@ const Media = () => {
         .then(data => setPosts(data));
     },[])
   return (
-    <div className='grid grid-cols-1 gap-6 my-[70px] '>
+    <div className='grid grid-cols-1 gap-6 my-[70px] min-h-screen '>
         
         {
             posts.map(post => <PostCard  key={post._id} post={post}></PostCard>)

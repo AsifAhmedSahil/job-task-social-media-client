@@ -13,10 +13,14 @@ const Navbar = () => {
     const menuItems = <>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/media">Media</Link></li>
+
+        {/* {
+          user?.email && <li><Link to="/about">About</Link></li>
+        } */}
         <li><Link to="/about">About</Link></li>
     </>
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-green-300 text-black">
   <div className="navbar-start">
     <div className="dropdown">
       <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -26,7 +30,7 @@ const Navbar = () => {
         {menuItems}
       </ul>
     </div>
-   <Link to="/" className="btn btn-ghost normal-case text-xl">daisyUI</Link>
+   <Link to="/" className="btn btn-ghost normal-case text-xl ">SK Media</Link>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
@@ -40,9 +44,9 @@ const Navbar = () => {
   
   {
     user?.email ? 
-    <Link to="/login"><button  onClick={handleLogout} className="btn btn-success rounded">Log out</button></Link>
+    <Link to="/login"><button  onClick={handleLogout} className="btn btn-success rounded bg-black text-white">Log out</button></Link>
     : 
-    <Link to="/login"><button className="btn btn-success rounded">Login</button></Link>
+    <Link to="/login"><button className="btn btn-success rounded bg-black text-white">Login</button></Link>
   }
   
   </div>

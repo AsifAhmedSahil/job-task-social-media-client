@@ -11,6 +11,12 @@ const SignUp = () => {
     .then(result =>{
       const user =result.user;
       console.log(user);
+      saveUser(user.email)
+
+    //   const userData = {
+    //     email: user.email,
+        
+    // }
     })
     .catch(error => console.error(error));
 
@@ -24,7 +30,7 @@ const SignUp = () => {
     const address = form.address.value
     const password = form.password.value
     console.log(email,password,name);
-    saveUser(name,email,university,address,password)
+    saveUser(email,name,university,address,password)
     createUser(email,password)
     .then(result =>{
       const user = result.user;
@@ -36,7 +42,7 @@ const SignUp = () => {
     })
   }
 
-  const saveUser = (name,email,university,address,password) =>{
+  const saveUser = (email,name,university,address,password) =>{
     const user = {name,email,university,address,password};
     fetch("http://localhost:5000/users",{
       method: 'POST',

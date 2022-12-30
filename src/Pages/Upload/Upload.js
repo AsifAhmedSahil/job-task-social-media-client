@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider'
 
@@ -32,7 +33,8 @@ const Upload = () => {
                 const post ={
                     status:status,
                     image:imgData.data.url,
-                    user:user?.email
+                    user:user?.email,
+                    like:"0"
                 }
 
                 // save database
@@ -62,17 +64,25 @@ const Upload = () => {
     }
     
   return (
-    <div className='text-center my-10 py-10  max-w-xl mx-auto'>
+    <div className='text-center my-10 py-10  max-w-xl mx-auto border border-green-500 p-8 '>
         <h2 className='text-xl font-semibold my-6'>Whats on your mind?</h2>
-        <form onSubmit={handlePost}>
+        <form onSubmit={handlePost} className="">
         
         <input type="text" name='status' className="textarea textarea-warning w-[80%]" placeholder="Status..."></input>
         
        
-        <div>
+        <div className=' mt-10'>
         <input type="file" name="image" />
         </div>
-        <input className='btn btn-success' type="submit" value='submit' />
+        {
+          user?.email ?
+          <input className='btn btn-success mt-10' type="submit" value='submit' />
+          : 
+          <>
+            <input className='btn btn-primary mt-10 ' disabled type="submit" value='submit'/>
+            <Link to="/login"><button  className='bg-red-500 text-white ml-5 btn rounded animate-bounce'>please login!</button></Link>
+          </>
+          }
         </form>
     </div>
   )

@@ -11,8 +11,8 @@ const PrivateRoute = ({children}) => {
     if(user && user.uid){
         return children;
     }
-//   return <Navigate to="/login"></Navigate>
-  return <Navigate state={{from:location}} replace></Navigate>
+  return <Navigate to="/login"></Navigate>
+//   return <Navigate state={{from:location}} replace></Navigate>
 }
 
 export default PrivateRoute
