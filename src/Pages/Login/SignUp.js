@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom';
 import loginimg from "../../assets/log.jpg";
 import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
 
 const SignUp = () => {
   const {createUser,googleSignIn} = useContext(AuthContext)
+  // const [createdUserEmail,setCreatedUserEmail] = useState("")
   const handleGoogleSignin = () =>{
     googleSignIn()
     .then(result =>{
@@ -19,8 +20,11 @@ const SignUp = () => {
     const form = event.target
     const email = form.email.value
     const name = form.name.value
+    const university = form.university.value
+    const address = form.address.value
     const password = form.password.value
     console.log(email,password,name);
+    saveUser(name,email,university,address,password)
     createUser(email,password)
     .then(result =>{
       const user = result.user;
@@ -29,6 +33,23 @@ const SignUp = () => {
     })
     .catch(error =>{
       console.error(error);
+    })
+  }
+
+  const saveUser = (name,email,university,address,password) =>{
+    const user = {name,email,university,address,password};
+    fetch("http://localhost:5000/users",{
+      method: 'POST',
+      headers:{
+        "content-type": "application/json"
+      },
+      body:JSON.stringify(user)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("saveuser",data);
+      // setCreatedUserEmail(email)
+      
     })
   }
   return (
@@ -79,6 +100,30 @@ const SignUp = () => {
                 className="input input-bordered"
               />
               
+            </div>
+            <div className="form-control">
+              
+              <label className="label">
+                <span className="label-text">University</span>
+              </label>
+              <input
+                type="text"
+                name="university"
+                placeholder="University"
+                className="input input-bordered"
+              />
+            </div>
+            <div className="form-control">
+              
+              <label className="label">
+                <span className="label-text">Address</span>
+              </label>
+              <input
+                type="text"
+                name="address"
+                placeholder="Address"
+                className="input input-bordered"
+              />
             </div>
             <div className="form-control mt-6">
               <input

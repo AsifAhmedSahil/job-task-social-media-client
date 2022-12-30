@@ -1,9 +1,57 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import { AiOutlineLike,AiOutlineSend } from 'react-icons/ai';
+import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
+import { toast } from 'react-toastify';
+import Comment from '../Comment/Comment';
 
 const Details = () => {
-    const {status,image} = useLoaderData();
+  const {user} = useContext(AuthContext);
+  const {status,image,_id} = useLoaderData();
+  const [comments,setComments] = useState([])
+  
+
+  useEffect(()=>{
+    fetch("http://localhost:5000/comments")
+    .then(res => res.json())
+    .then(data => setComments(data))
+  },[comments]);
+
+  
+
+  const handleComment = event =>{
+
+    
+    event.preventDefault();
+    const form = event.target
+    const comment = form.comment.value
+    const email = user?.email;
+
+    const click = {
+      comment: comment,
+      email: email,
+      postid:_id
+
+    }
+
+    fetch("http://localhost:5000/comments",{
+      method:"POST",
+      headers:{
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(click)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      if(data.acknowledged){
+        toast.success("comment post")
+        form.reset();
+      }
+    })
+    .catch(err => console.log(err))
+  }
+    
   return (
     <div className="card w-96 bg-base-100 shadow-xl mx-auto my-[100px] ">
   <figure className="px-10 pt-10">
@@ -11,12 +59,25 @@ const Details = () => {
   </figure>
   <div className="card-body items-center text-center">
     <h2 className="card-title">Shoes!</h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <p>{status}</p>
     <div className=" flex flex-row justify-between">
       <button className="mr-6"><AiOutlineLike size={30}></AiOutlineLike></button>
+      <form onSubmit={handleComment} className="flex justify-center items-center ">
+        
+      <div>
       <input name='comment' type="text" placeholder="Type here" className="input mr-6 w-full max-w-xs input-bordered" />
-      <button className="mr-6"><AiOutlineSend size={30}></AiOutlineSend></button>
+      </div>
+      <input type="submit" value="send"  className='btn btn-sm flex ml-9'/>
+      </form>
+      {/* <button className="mr-6"><AiOutlineSend size={30}></AiOutlineSend></button> */}
+      
     </div>
+    <h1 className='font-bold text-3xl underline mt-10'>Comments</h1>
+    {
+      
+      comments?.map(com => <Comment com={com} key={com._id} ></Comment>)
+    }
+    
   </div>
 </div>
   )
